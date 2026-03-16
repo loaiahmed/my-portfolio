@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>loaisalem — portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="desktop">
+
+    <!-- i3bar -->
+    <div class="i3bar">
+      <div class="bar-workspaces">
+        <div class="ws active" id="ws1" onclick="switchWS(1)">1</div>
+        <div class="ws"        id="ws2" onclick="switchWS(2)">2</div>
+        <div class="ws"        id="ws3" onclick="switchWS(3)">4</div>
+        <div class="ws"        id="ws4" onclick="switchWS(4)">6</div>
+      </div>
+      <div class="bar-title">
+        <span id="barTitle">[loaisalem@loai-81mv ~] $ — portfolio</span>
+      </div>
+      <div class="bar-right">
+        <div class="bar-block c-cyan">
+          <span class="val" id="clk">--:--</span>
+        </div>
+        <div class="bar-block c-lavender hide-sm">
+          <span class="lbl">bat</span><span class="val">100%</span>
+        </div>
+        <div class="bar-block c-orange hide-sm">
+          <span class="lbl">mem</span><span class="val">24%</span>
+        </div>
+        <div class="bar-block hide-sm">
+          <span class="lbl">vol</span><span class="val">57%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- main content -->
+    <div class="content">
+      <div class="xfce-term">
+
+        <!-- tab bar -->
+        <div class="term-tabbar">
+          <div class="tab active">
+            <div class="tab-dot"></div>
+            loaisalem@loai-81mv: ~
+          </div>
+          <div class="tab-spacer"></div>
+          <div class="ctrl-btns">
+            <div class="ctrl-btn cb-r"></div>
+            <div class="ctrl-btn cb-y"></div>
+            <div class="ctrl-btn cb-g"></div>
+          </div>
+        </div>
+
+        <!-- terminal output -->
+        <div class="term-body" id="tb"></div>
+
+        <!-- input row -->
+        <div class="term-input-row">
+          <span style="font-size:12px;white-space:nowrap">
+            <span class="p-bracket">[</span>
+            <span class="p-user">loaisalem</span>
+            <span class="p-at">@</span>
+            <span class="p-host">loai-81mv</span>
+            <span class="p-sp"></span>
+            <span class="p-dir">~</span>
+            <span class="p-bracket">]</span>
+            <span class="p-suffix">$</span>
+          </span>
+          <input
+            class="term-input"
+            id="ti"
+            type="text"
+            placeholder="type a command… (try: help)"
+            autocomplete="off"
+            spellcheck="false"
+            autofocus
+          />
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>
