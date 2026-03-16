@@ -40,15 +40,19 @@ const PROJECTS = [
   },
 ];
 
+/* Skills are derived from project usage — no proficiency numbers.
+   Each entry lists which projects the skill appears in.          */
 const SKILLS = [
-  { n: 'Linux / Arch',   p: 95, c: '' },
-  { n: 'i3wm / tiling',  p: 93, c: '' },
-  { n: 'Shell scripting', p: 88, c: 'o' },
-  { n: 'i3blocks / bar',  p: 87, c: '' },
-  { n: 'Rofi / dmenu',    p: 90, c: 'pk' },
-  { n: 'Python',          p: 76, c: 'p' },
-  { n: 'Helix / Neovim',  p: 72, c: 'p' },
-  { n: 'Git / GNU Stow',  p: 85, c: 'o' },
+  { n: 'Linux / Arch',    projects: ['dotfiles', 'auto-wallpaper', 'i3blocks-modules', 'rofi-scripts', 'helix-config'] },
+  { n: 'i3wm / tiling',   projects: ['dotfiles', 'rofi-scripts', 'i3blocks-modules'] },
+  { n: 'Shell scripting',  projects: ['dotfiles', 'i3blocks-modules', 'rofi-scripts'] },
+  { n: 'i3blocks / bar',   projects: ['dotfiles', 'i3blocks-modules'] },
+  { n: 'Rofi / dmenu',     projects: ['dotfiles', 'rofi-scripts'] },
+  { n: 'Python',           projects: ['auto-wallpaper'] },
+  { n: 'Helix / Neovim',   projects: ['helix-config'] },
+  { n: 'Git / GNU Stow',   projects: ['dotfiles', 'helix-config', 'auto-wallpaper'] },
+  { n: 'GTK theming',      projects: ['dotfiles'] },
+  { n: 'Bash',             projects: ['i3blocks-modules', 'rofi-scripts', 'dotfiles'] },
 ];
 
 /* ============================================================
@@ -193,26 +197,40 @@ function projects() {
 
 function skills() {
   gap();
-  el('<span style="color:var(--cyan);font-size:11px">skill proficiency</span>');
+  el('<span style="color:var(--cyan);font-size:11px">skills — used in projects (click a pill to jump to project)</span>');
+  gap();
 
   SKILLS.forEach(s => {
-    el(`<div class="sk-row">
+    const pills = s.projects.map(pname => {
+      const proj = PROJECTS.find(p => p.name === pname);
+      return `<span class="sk-proj-pill" onclick="jumpToProject('${pname}')" title="${proj ? proj.desc : ''}">${pname}</span>`;
+    }).join('');
+
+    el(`<div class="sk-entry">
       <span class="sk-name">${s.n}</span>
-      <div class="sk-bar">
-        <div class="sk-fill ${s.c}" style="width:0%" data-target="${s.p}%"></div>
-      </div>
-      <span class="sk-pct">${s.p}%</span>
+      <div class="sk-pills">${pills}</div>
     </div>`);
   });
 
-  /* animate fill bars after first paint */
+  gap();
+}
+
+/** Run `projects` command and highlight the matching card. */
+function jumpToProject(name) {
+  clearTerm();
+  prompt('projects');
+  projects();
+  /* After DOM settles, scroll to and highlight the card */
   requestAnimationFrame(() => {
-    document.querySelectorAll('.sk-fill[data-target]').forEach(b => {
-      b.style.width = b.dataset.target;
+    const cards = tb.querySelectorAll('.proj-card');
+    cards.forEach(card => {
+      const nameEl = card.querySelector('.pc-name');
+      if (nameEl && nameEl.textContent.trim() === name) {
+        card.classList.add('sel');
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
     });
   });
-
-  gap();
 }
 
 function about() {
